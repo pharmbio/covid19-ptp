@@ -22,7 +22,7 @@ func main() {
 
 	// Set up workflow
 	excapeDB := spc.NewFileSource(wf, "excapedb", "../../raw/pubchem.chembl.dataset4publication_inchi_smiles.tsv")
-	covidData := spc.NewFileSource(wf, "coviddata", "../../raw/coviddata.tsv")
+	supplTbl1 := spc.NewFileSource(wf, "suppltbl1", "../../raw/gordonetal.suppl01.tsv")
 
 	// Reproduce the following:
 	// > We applied a two step filtering strategy to determine the final list of
@@ -31,13 +31,13 @@ func main() {
 	// > possess a MiST score ≥ 0.7, a SAINTexpress BFDR ≤ 0.05 and an average
 	// > spectral count ≥ 2.
 	filterTargetsStep1 := wf.NewProc("filter-highspec-targets",
-		`cat {i:coviddata} \
+		`cat {i:suppltbl1} \
 		| awk -F'\t' '( $4 >= 0.7 && $5 <= 0.05 && $6 >= 2.0 ) { print $3 }' \
 		| sort \
 		| uniq \
 		| sed 's/\"//g' \
 		> {o:highspectargets}`)
-	filterTargetsStep1.In("coviddata").From(covidData.Out())
+	filterTargetsStep1.In("suppltbl1").From(supplTbl1.Out())
 	filterTargetsStep1.SetOut("highspectargets", "dat/targets.step1.tsv")
 
 	countPerGene := wf.NewProc("count-per-gene", "cat {i:excapedb} | awk -F'\t' '{ c[$9]++ } END { for (key in c) { print key \"\t\" c[key] } }' > {o:genecounts}")
