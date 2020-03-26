@@ -19,6 +19,7 @@ software installed.
 - The bash shell
 - [Go 1.5 or later](https://golang.org/)
 - [SciPipe 0.9.6 or later](https://scipipe.org/)
+- The `ssconvert` command from [Gnumeric](http://www.gnumeric.org/)
 
 ## How to reproduce
 
