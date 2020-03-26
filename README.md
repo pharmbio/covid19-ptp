@@ -20,6 +20,7 @@ software installed.
 - [Go 1.5 or later](https://golang.org/)
 - [SciPipe 0.9.6 or later](https://scipipe.org/)
 - The `ssconvert` command from [Gnumeric](http://www.gnumeric.org/)
+- The `csvtool` command, available in Ubuntu 18.04 repos
 
 ## How to reproduce
 

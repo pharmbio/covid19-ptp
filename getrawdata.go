@@ -51,7 +51,7 @@ func main() {
 	// ------------------------------------------------------------------------
 	// Convert file formats: csv -> tsv
 	// ------------------------------------------------------------------------
-	csv2Tsv := wf.NewProc("csv2tsv", "cat {i:csv} | sed 's/,/\t/g' > {o:tsv}")
+	csv2Tsv := wf.NewProc("csv2tsv", "csvtool -t COMMA -u TAB cat {i:csv} | tr ',' '.' > {o:tsv}")
 	csv2Tsv.In("csv").From(xlsx2Csv.Out("csv"))
 	csv2Tsv.SetOut("tsv", "{i:csv|%.csv}.tsv")
 
