@@ -9,14 +9,37 @@ The basic idea is to use the 67 druggable human protein targets reported in
 [this study](https://doi.org/10.1101/2020.03.22.002386) to develop predictive
 models for them, based on binding data for those proteins in open datasets.
 
-## How to reproduce
 
-### Requirements
+## Requirements
 
+To run the scripts and workflows in this repository, you need the following
+software installed.
+
+- A unix-like environment (Ubuntu, MacOS, or [Windows with MSYS2](https://rillabs.com/posts/linux-like-non-wsl-terminal-env-on-windows))
+- The bash shell
 - [Go 1.5 or later](https://golang.org/)
 - [SciPipe 0.9.6 or later](https://scipipe.org/)
 
-### Steps:
+## How to reproduce
+
+#### Easy way
+
+To download all data and reproduce all experiments, run the `runall.sh` shell script:
+
+```bash
+./runall.sh
+```
+
+... or:
+
+```bash
+bash runall.sh
+```
+
+#### Manually with more control
+
+If you want to run the individual steps manually to have more control over
+what's happening, then follow the following steps.
 
 - Get raw data:
 
