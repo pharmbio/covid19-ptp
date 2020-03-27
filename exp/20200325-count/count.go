@@ -44,6 +44,23 @@ func main() {
 	countPerGene.SetOut("genecounts", "dat/genecounts.tsv")
 	countPerGene.In("excapedb").From(excapeDB.Out())
 
+	// Extract targets from table 3 and 4
+	supplTable3 := spc.NewFileSource(wf, "suppltbl3", "../../raw/gordonetal.suppl03.tsv")
+	supplTable4 := spc.NewFileSource(wf, "suppltbl4", "../../raw/gordonetal.suppl04.tsv")
+	extractTbl34 := wf.NewProc("extract-targets-tbl3-4",
+		`cat {i:tbl3} {i:tbl4} \
+		 | awk -F'\t' '
+			( $2 ~ /\/[A-Z]/ ) { a=$2; b=$2; sub(/\/.*/, "", a); sub(/.*\//, "", b); print a; print b }         # For lines with multiple full gene names (like ABC1/DEF4), print both on separate lines
+			( $2 ~ /\/[0-9]/ ) { a=$2; b=$2; sub(/\/[0-9]/, "", a); sub(/[0-9]\//, "", b); print a; print b  }  # For lines with genes with multiple numbers (like ABC1/2), print both on separate lines
+			( $2 !~ /\// ) { print $2 }                                                                         # For the rest (lines without a slash in col 2), just print normally' \
+		 | awk '( $1 ~ /^[A-Z0-9]{3,10}$/ ) # Remove everything that doesnt look like a gene name' \
+		 | sort \
+		 | uniq \
+		 > {o:genes}`)
+	extractTbl34.In("tbl3").From(supplTable3.Out())
+	extractTbl34.In("tbl4").From(supplTable4.Out())
+	extractTbl34.SetOut("genes", "dat/targets.tbl3-4.tsv")
+
 	// Run the workflow
 	wf.Run()
 }
