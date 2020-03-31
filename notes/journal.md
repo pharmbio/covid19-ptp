@@ -7,5 +7,6 @@
     of filtering and canonization that they've done with ExcapeDB.
   - CPSign is updated with some new names on flags etc.
   - Jonathan to update the CPSign commands together with Staffan.
-  - Samuel to implement most of the workflow.
+  - Jonathan or Ola to send CPSign license to Samuel.
+  - Samuel to implement most of the workflow (based on the earlier PTP pipeline).
   - Go with the targets from table 3 and 4 in Gordon et al.
