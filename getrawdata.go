@@ -12,14 +12,14 @@ func main() {
 	// ------------------------------------------------------------------------
 	// Initiate workflow, with 18 cores
 	// ------------------------------------------------------------------------
-	wf := sp.NewWorkflow("get-rawdata", 18)
+	wf := sp.NewWorkflow("get-rawdata", 4)
 
 	// ------------------------------------------------------------------------
 	// Download ExCAPE DB
 	// ------------------------------------------------------------------------
-	dbFileName := "pubchem.chembl.dataset4publication_inchi_smiles.tsv.xz"
-	dlExcapeDB := wf.NewProc("dlDB", fmt.Sprintf("wget https://zenodo.org/record/173258/files/%s -O {o:excapexz}", dbFileName))
-	dlExcapeDB.SetOut("excapexz", "raw/"+dbFileName)
+	dbFileName := "pubchem.chembl.dataset4publication_inchi_smiles_v2.tsv.xz"
+	dlExcapeDB := wf.NewProc("download_excapedb", fmt.Sprintf("wget https://zenodo.org/record/2543724/files/%s -O {o:excapexz}", dbFileName))
+	dlExcapeDB.SetOut("excapexz", "raw/excapedb.v2.tsv.xz")
 
 	unPackDB := wf.NewProc("unPackDB", "xzcat {i:xzfile} > {o:unxzed}")
 	unPackDB.In("xzfile").From(dlExcapeDB.Out("excapexz"))
