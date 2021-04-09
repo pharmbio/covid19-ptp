@@ -14,12 +14,6 @@ func main() {
 	// Create a workflow, using 4 cpu cores
 	wf := sp.NewWorkflow("count", 4)
 
-	// Optionally just plot and exit
-	if len(args) > 0 && args[0] == "plot" {
-		wf.PlotGraphPDF("workflow.dot")
-		return
-	}
-
 	// Set up workflow
 	excapeDB := spc.NewFileSource(wf, "excapedb", "../../raw/pubchem.chembl.dataset4publication_inchi_smiles.tsv")
 	supplTbl1 := spc.NewFileSource(wf, "suppltbl1", "../../raw/gordonetal.suppl01.tsv")
@@ -60,6 +54,12 @@ func main() {
 	extractTbl34.In("tbl3").From(supplTable3.Out())
 	extractTbl34.In("tbl4").From(supplTable4.Out())
 	extractTbl34.SetOut("genes", "dat/targets.tbl3-4.tsv")
+
+	// Optionally just plot and exit
+	if len(args) > 0 && args[0] == "plot" {
+		wf.PlotGraphPDF("workflow.dot")
+		return
+	}
 
 	// Run the workflow
 	wf.Run()
